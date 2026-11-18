@@ -1,0 +1,9 @@
+# Local compiler outputs
+*.exe
+*.o
+*.obj
+
+# Editor and operating-system metadata
+.vscode/
+.DS_Store
+Thumbs.db
