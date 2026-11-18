@@ -350,7 +350,7 @@ git push                  <span class="cmt"># upload to GitHub</span></pre>
     "wd_name_2": "TBD — Team member 2",
     "wd_task_2": "Own the defensive path and integration: bounds-check and canary design, test cases, test log, report, and final demo rehearsal. Assembly must be written by the student.",
     skeleton: "main — initialize the demonstration and run selected fixed test cases\nrun_case — select a normal, boundary, or oversized input scenario\nvulnerable_demo — model the unchecked write within the isolated Playground lab\nsafe_demo — enforce the length bound before writes\ncheck_canary — verify the frame-integrity value before returning\nshow_status — display normal return, benign win(), or blocked/detected result\nwin — harmless success routine used only to prove redirected control flow",
-    diagram: "TBD — add a repository link to the stack/control-flow diagram",
+    diagram: "stack-smash-control-flow.svg (commit this diagram to the shared repository)",
     repo: "TBD — add the shared GitHub repository URL",
     "test__core__1__success": "In the isolated Playground only, a fixed oversized test case changes the intended saved return target and transfers execution to the benign win() routine; a short input returns normally.",
     "test__core__1__owners": "TBD — Team member 1",
