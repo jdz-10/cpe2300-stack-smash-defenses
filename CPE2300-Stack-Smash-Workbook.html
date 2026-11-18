@@ -1,0 +1,658 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset="utf8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CPE 2300 Project Workbook</title>
+<meta name="description" content="Cal Poly-styled weekly workbook for the CPE 2300 RISC-V project: set a plan once, then one page per Wednesday auto-lists that week's goals with attainment, contributions, code and challenges.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Libre+Franklin:wght@400;600;700;800;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --bg:#f6f3e8; --panel:#fffdf7; --panel2:#f3eed9; --line:#e2d8b4; --ink:#1b1d1a; --muted:#5b5f55;
+  --green:#1d4d2f; --green2:#2f7049; --gold:#c8a951; --gold-ink:#7a5f10; --gold-s:#f6edcf; --onacc:#fffdf7; --bad:#9d2d23; --bad-s:#f9e2df; --ok:#1d4d2f; --ok-s:#e2f0e5;
+  --f-display:"Libre Franklin",system-ui,sans-serif; --f-body:"Source Serif 4",Georgia,serif; --f-mono:"Courier Prime","Courier New",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121613; --panel:#1a201b; --panel2:#222a22; --line:#39412f; --ink:#e9e6da; --muted:#a4a798;
+  --green:#7fc095; --green2:#9ad3ad; --gold:#d8bb63; --gold-ink:#e2c56f; --gold-s:#2e2a18; --onacc:#121613; --bad:#f09a8d; --bad-s:#3b201e; --ok:#9ad3ad; --ok-s:#1d3021; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121613; --panel:#1a201b; --panel2:#222a22; --line:#39412f; --ink:#e9e6da; --muted:#a4a798;
+  --green:#7fc095; --green2:#9ad3ad; --gold:#d8bb63; --gold-ink:#e2c56f; --gold-s:#2e2a18; --onacc:#121613; --bad:#f09a8d; --bad-s:#3b201e; --ok:#9ad3ad; --ok-s:#1d3021; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;margin:0}
+.wrap{max-width:880px;margin:0 auto;padding:22px max(16px,env(safe-area-inset-left,0px)) 80px}
+h1,h2,h3,.kicker,.ui,label,button{font-family:var(--f-display)}
+header{border-bottom:3px solid var(--gold);padding-bottom:14px}
+.kicker{font:800 .8rem var(--f-display);letter-spacing:.15em;text-transform:uppercase;color:var(--gold-ink)}
+h1{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:900;color:var(--green);margin:5px 0 7px;letter-spacing:-.01em}
+.lead{max-width:72ch;margin:0;font-size:1.04rem}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0 2px}
+.btn{font:800 .95rem var(--f-display);border-radius:9px;padding:9px 16px;cursor:pointer;border:1.5px solid var(--green);background:var(--panel);color:var(--green)}
+.btn.gold{background:var(--gold);border-color:var(--gold-ink);color:#2a2109}
+.toggle{display:flex;align-items:center;gap:8px;font:700 .95rem var(--f-display);color:var(--muted);cursor:pointer}
+.toggle input{width:18px;height:18px;accent-color:var(--green)}
+.saved{font:600 .82rem var(--f-display);color:var(--muted);margin-left:auto}
+.how{background:var(--gold-s);border:1.5px solid var(--gold);border-radius:11px;padding:11px 15px;margin-top:14px;font-size:.96rem}
+.how b{color:var(--gold-ink)}
+.tabs{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 4px}
+.tabs button{font:800 .98rem var(--f-display);border:1.5px solid var(--green);background:var(--panel);color:var(--green);border-radius:9px;padding:8px 14px;cursor:pointer}
+.tabs button.active{background:var(--green);color:var(--onacc);box-shadow:0 3px 12px rgba(29,77,47,.3)}
+.page{display:none}
+.page.active{display:block}
+.formcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px 24px;margin-top:16px}
+.formhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--gold);padding-bottom:10px;margin-bottom:6px}
+.formhead .tag{font:900 .72rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--onacc);background:var(--green);padding:4px 10px;border-radius:6px}
+.formhead h2{font-size:1.3rem;font-weight:800;color:var(--green);margin:0}
+.formhead .sub{font-size:.9rem;color:var(--muted);font-family:var(--f-display);font-weight:600}
+.field{margin-top:15px}
+.field > label{display:block;font-weight:700;font-size:.98rem;color:var(--ink);margin-bottom:5px}
+.field .n{color:var(--gold-ink);font-weight:800;margin-right:6px}
+.field .hint{font-weight:400;color:var(--muted);font-size:.86rem;font-family:var(--f-body)}
+input[type=text],input[type=url],input[type=date],textarea,select{
+  width:100%;font-family:var(--f-body);font-size:1rem;color:var(--ink);background:var(--panel2);
+  border:1.5px solid var(--line);border-radius:9px;padding:9px 11px}
+textarea{resize:vertical;min-height:52px;line-height:1.45}
+input:focus,textarea:focus,select:focus{outline:3px solid var(--gold);outline-offset:1px;border-color:var(--green2)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row .field{flex:1;min-width:160px;margin-top:15px}
+.goalplan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px}
+.gpgroup{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel2)}
+.gpdate{font:800 .82rem var(--f-display);color:var(--gold-ink);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.gpgroup input{margin-top:7px}
+.gpgoal{margin-top:8px}
+.gpgoal input{margin-bottom:5px}
+select.goallink{font-size:.85rem;padding:6px 8px}
+.glink{font-size:.84rem;color:var(--green2);font-weight:700;margin-top:4px;font-family:var(--f-display)}
+.ghh{font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-ink);font-weight:800;margin:20px 0 8px;border-top:1px solid var(--line);padding-top:14px}
+.ghsteps{margin:6px 0 0;padding-left:22px;line-height:1.6}
+.ghsteps li{margin:6px 0}
+.ghnote{font-size:.92rem;color:var(--muted);margin:8px 0 0}
+.cmdblock{font-family:var(--f-mono);font-size:.92rem;line-height:1.7;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:13px 15px;overflow-x:auto;white-space:pre;margin:4px 0 0;color:var(--ink)}
+.cmdblock .cmt{color:var(--muted)}
+.selfgrade{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:7px}
+.selfgrade .sglabel{font:700 .88rem var(--f-display);color:var(--gold-ink)}
+.selfgrade select{flex:0 0 120px}
+.selfgrade input{flex:1;min-width:160px}
+.memblock{border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-top:12px;background:var(--panel2)}
+.memname{font:800 1.05rem var(--f-display);color:var(--green);border-bottom:2px solid var(--gold);padding-bottom:5px;margin-bottom:6px}
+.subfield{margin-top:8px}
+.sublabel{display:block;font:700 .84rem var(--f-display);color:var(--gold-ink);margin-bottom:3px}
+.jump{cursor:pointer}
+.jump:hover{text-decoration:underline;color:var(--green2)}
+.integrity{border:2px solid var(--bad);border-radius:12px;padding:13px 16px;margin-top:18px;background:var(--bad-s)}
+.integrity h4{margin:0 0 6px;font:800 .82rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--bad)}
+.integrity p{margin:0 0 9px;font-size:.96rem;line-height:1.45}
+.integrity .ack{display:flex;align-items:flex-start;gap:9px;font-weight:700}
+.integrity .ack input{margin-top:3px;width:18px;height:18px;accent-color:var(--bad);flex:0 0 auto}
+.integrity .sigrow{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.integrity .sigrow .field{margin-top:0}
+.gradewrap{overflow-x:auto;margin-top:14px}
+.gradetbl{width:100%;min-width:560px;border-collapse:separate;border-spacing:0;font-size:1rem;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.gradetbl th{background:var(--green);color:var(--onacc);font:800 .74rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;text-align:left;padding:11px 14px}
+.gradetbl td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+.gradetbl tbody tr:nth-child(even){background:var(--panel2)}
+.gradetbl .gw{font:900 1.2rem var(--f-display);color:var(--gold-ink);white-space:nowrap;width:1%}
+.gradetbl .gc > b{display:block;color:var(--green);font-family:var(--f-display);font-size:1rem}
+.gradetbl .gc span{display:block;color:var(--muted);font-size:.9rem;margin-top:2px}
+.gchip{display:inline-block;font:800 .72rem var(--f-display);letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:7px;white-space:nowrap}
+.gchip.team{background:var(--ok-s);color:var(--ok)}
+.gchip.ind{background:var(--gold-s);color:var(--gold-ink)}
+.gradetbl tfoot td{border-top:2px solid var(--gold);font-weight:800;background:var(--panel)}
+.gradetbl tfoot .gw{color:var(--green)}
+.goalrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin-top:8px;background:var(--panel2)}
+.goalrow .gtext{flex:1;min-width:200px;font-size:.98rem}
+.goalrow select{flex:0 0 150px}
+.muted{color:var(--muted);font-style:italic}
+.objplan{margin-top:8px}
+.objhead{font:800 .8rem var(--f-display);color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.objhead.addon{color:var(--gold-ink)}
+.objrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.objrow input{flex:1;min-width:200px}
+.objrow select{flex:0 0 160px}
+.checklist{margin-top:8px}
+.checkcard{border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;padding:12px 14px;margin-top:10px;background:var(--panel2)}
+.checkcard.addon{border-left-color:var(--gold)}
+.checktitle{font:800 1rem var(--f-display);color:var(--green);margin-bottom:2px}
+.checkcard.addon .checktitle{color:var(--gold-ink)}
+.checkhint{font-size:.88rem;color:var(--muted);margin:0 0 8px}
+.checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px}
+.checkgrid .full{grid-column:1/-1}
+.checkgrid textarea{min-height:48px}
+@media(max-width:560px){.checkgrid{grid-template-columns:1fr}}
+.wdiv{margin-top:8px}
+.wrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:flex-start}
+.wrow .nm{flex:0 0 200px}
+.wrow .tk{flex:1;min-width:220px;min-height:64px}
+@media(max-width:560px){.wrow .nm{flex:1}}
+.mcontrib{margin-top:9px}
+.mcontrib label{display:block;font-weight:700;font-size:.92rem;color:var(--green2);margin-bottom:4px}
+.memrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.memrow .mn{flex:1;min-width:180px}
+.memrow .me{flex:1;min-width:160px}
+.codearea{font-family:var(--f-mono);font-size:.9rem;line-height:1.45}
+.locknote{display:flex;align-items:flex-start;gap:9px;margin-top:16px;background:var(--gold-s);border:1.5px dashed var(--gold-ink);border-radius:10px;padding:10px 13px;font-size:.92rem}
+.locknote input{margin-top:3px;width:17px;height:17px;accent-color:var(--gold-ink);flex:0 0 auto}
+.foot{margin-top:34px;font-size:.9rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+@media print{
+  .bar,.tabs,.how,.saved{display:none}
+  .page{display:block}
+  .page:not(.active){display:none !important}
+  body{background:#fff;font-size:11pt}
+  .formcard{break-inside:avoid;border:1px solid #999;box-shadow:none}
+  input,textarea,select{background:#fff;border:1px solid #999}
+  .wrap{padding:0}
+}
+</style></head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">CPE 2300 · RISC-V · Term Project</div>
+  <h1>Project Workbook</h1>
+  <p class="lead">Stack Smash → Defenses project plan. Project work begins <b>Monday, November 17</b>. Each checkpoint page carries two linked goals; record only work actually completed, any plan changes, each member's contribution, the core code you wrote, and challenges you hit. Final deliverables (one code file + report) are due <b>Friday, December 4 at 11:59 PM</b>.</p>
+</header>
+
+<div class="bar">
+  <button class="btn gold" onclick="window.print()">Print this page / Save as PDF</button>
+  <button class="btn" onclick="if(confirm('Clear ALL saved entries in this browser?')){try{Object.keys(localStorage).filter(function(k){return k.indexOf('cpe2300.')===0}).forEach(function(k){localStorage.removeItem(k)})}catch(e){} location.reload();}">Clear all</button>
+  <label class="toggle"><input type="checkbox" id="themeT"> Light mode</label>
+  <span class="saved" id="savedNote">Saved in this browser</span>
+</div>
+
+<div class="how"><b>How it works:</b> this prepared copy includes the Stack Smash project plan and test cases. Replace the <b>TBD</b> fields with your team details, complete reports only with evidence from your own work, and Print → Save as PDF for each submission.</div>
+<div class="how" style="margin-top:10px"><b>Timeline:</b> planning starts Monday, Nov. 17; the first checkpoint is Wednesday, Nov. 18; Thanksgiving week is skipped; the final working checkpoint is Wednesday, Dec. 2.</div>
+
+<nav class="tabs" id="tabs"></nav>
+
+<!-- ============ PLAN ============ -->
+<section class="page active" data-page="plan">
+  <div class="formcard">
+    <div class="formhead"><span class="tag">Plan</span><h2>Project Lock-in</h2><span class="sub">set once · objectives are frozen after this</span></div>
+    <div class="row">
+      <div class="field"><label>Project title</label><input type="text" data-k="title"></div>
+      <div class="field"><label>Team name</label><input type="text" data-k="team"></div>
+    </div>
+    <div class="field"><label>Team members <span class="hint">— two members; each gets their own space on every weekly page</span></label>
+      <div id="memberlist"></div>
+    </div>
+    <div class="field"><label>Objectives <span class="hint">— 2 to 3 core objectives (must-have), then add-on features (if time allows); give each a deadline Wednesday</span></label>
+      <div class="objplan" id="objplan"></div>
+    </div>
+    <div class="field"><label>Two goals per Wednesday <span class="hint">— link each to a main objective above; Thanksgiving week (Nov 25) is skipped</span></label>
+      <div class="goalplan" id="goalplan"></div>
+    </div>
+    <div class="field"><label>Work division <span class="hint">— two owners: name + what they own</span></label>
+      <div class="wdiv">
+        <div class="wrow"><input class="nm" type="text" data-k="wd_name_1" placeholder="Student name"><textarea class="tk" rows="3" data-k="wd_task_1" placeholder="Owns / responsibilities — e.g. framebuffer drawing: fillRect, palette, circle mask"></textarea></div>
+        <div class="wrow"><input class="nm" type="text" data-k="wd_name_2" placeholder="Student name"><textarea class="tk" rows="3" data-k="wd_task_2" placeholder="Owns / responsibilities — e.g. mouse input + hit-test, button hover/press states"></textarea></div>
+      </div>
+    </div>
+    <div class="field"><label>Function skeleton <span class="hint">— function names + a one-line purpose each</span></label><textarea rows="4" data-k="skeleton" placeholder="draw_rect — fill a rectangle in the framebuffer&#10;hit_test  — is the mouse inside a button?"></textarea></div>
+    <div class="row">
+      <div class="field"><label>Block / system diagram link</label><input type="url" data-k="diagram" placeholder="https://github.com/..."></div>
+      <div class="field"><label>GitHub repo URL</label><input type="url" data-k="repo" placeholder="https://github.com/..."></div>
+    </div>
+    <div class="integrity">
+      <h4>Academic Integrity</h4>
+      <p>We affirm that all RISC-V <b>assembly code</b> submitted for this project is written by our team members ourselves. We understand that using <b>AI tools</b> (for example ChatGPT, Claude, or GitHub Copilot) to generate assembly code is a <b>violation of Cal Poly's Academic Integrity Policy</b> and will be reported as such.</p>
+      <label class="ack"><input type="checkbox" data-k="integrity_ack"> We have read and agree to the statement above.</label>
+      <div class="sigrow">
+        <div class="field" style="flex:2;min-width:220px"><label>Signed — type the full names of all members</label><input type="text" data-k="integrity_sign"></div>
+        <div class="field" style="flex:0 0 160px"><label>Date</label><input type="date" data-k="integrity_date"></div>
+      </div>
+    </div>
+    <div class="locknote"><input type="checkbox" data-k="lockack"><div>We understand these <b>goals are locked</b> after the plan. Any change is recorded on that week's page under "Changes to the plan."</div></div>
+  </div>
+  <div class="formcard" id="testplan">
+    <div class="formhead"><span class="tag">Test Plan</span><h2>Demo &amp; Test Checklist</h2><span class="sub">complete before the plan is locked</span></div>
+    <p style="margin:12px 0 0">For every core objective and add-on, define how you will prove that it works. This becomes the approved checklist for your final demo and evaluation.</p>
+    <div class="how" style="margin-top:12px"><b>Use AI carefully:</b> you may use AI to improve the clarity and coverage of your test cases—for example, to suggest edge cases or make an input/output expectation measurable. You must review every test yourselves. <b>Do not use AI to generate assembly code.</b></div>
+    <p class="checkhint" style="margin-top:14px">A useful test names the setup, exact input/action, and expected observable output. Do not write only “it works.”</p>
+    <div class="checklist" id="testchecklist"></div>
+  </div>
+</section>
+
+<div id="weeks"></div>
+
+<!-- ============ GRADING ============ -->
+<section class="page" data-page="grading">
+  <div class="formcard">
+    <div class="formhead"><span class="tag">Grading</span><h2>How you're graded</h2><span class="sub">team-based + individual split</span></div>
+    <p style="margin:12px 0 0">Your grade is <b>team-based</b> for the weekly work and final product, and <b>split (individual)</b> for the coding challenge and viva — so your own grade can differ from your teammates'.</p>
+    <p class="ghnote" style="color:var(--bad);font-weight:700;margin-top:10px">Academic integrity: all assembly code must be your own. Using AI to generate assembly violates Cal Poly's Academic Integrity Policy — sign the acknowledgment on the Plan tab.</p>
+
+    <div class="gradewrap"><table class="gradetbl"><thead><tr><th>Weight</th><th>Component</th><th>Type</th></tr></thead><tbody>
+      <tr><td class="gw">30%</td><td class="gc"><b>Weekly process &amp; project management</b><span>on-time Wednesday submissions, meeting goals, teamwork &amp; work split · includes the final report (5%)</span></td><td><span class="gchip team">Team</span></td></tr>
+      <tr><td class="gw">30%</td><td class="gc"><b>Final product</b><span>core features = <b>80%</b> of the product grade · add-on features = <b>20%</b></span></td><td><span class="gchip team">Team</span></td></tr>
+      <tr><td class="gw">20%</td><td class="gc"><b>In-class coding challenge — the split</b><span>a live change to your own code</span></td><td><span class="gchip ind">Individual</span></td></tr>
+      <tr><td class="gw">20%</td><td class="gc"><b>Viva</b><span>explain and defend your code</span></td><td><span class="gchip ind">Individual</span></td></tr>
+    </tbody><tfoot><tr><td class="gw">100%</td><td class="gc"><b>Team 60% &nbsp;·&nbsp; Individual 40%</b></td><td></td></tr></tfoot></table></div>
+
+    <div class="how" style="margin-top:16px"><b>⭐ Early-submission bonus:</b> up to <b>+5%</b> may be added if your project is submitted by <b>Friday, Nov 20</b>.</div>
+    <div class="how" style="margin-top:10px"><b>⭐ For maximum marks:</b> show a <b>demo of your progress to the instructor during office hours each week</b>.</div>
+
+    <h3 class="ghh">Final deliverables — due Friday, Dec 4 · 11:59 PM</h3>
+    <ul class="ghsteps">
+      <li><b>One code file</b> for the entire project — a single <code>.s</code> file that assembles and runs in the Playground.</li>
+      <li><b>A project report (PDF)</b> — carries <b>5%</b> (part of the project-management grade), containing the 10 items below.</li>
+    </ul>
+    <p class="ghnote" style="margin-top:6px"><b>Report contents (10 items):</b></p>
+    <ol class="ghsteps" style="margin-top:2px">
+      <li>Cover — project title, team members, repo link</li>
+      <li>Goals — core objectives (must-have) and add-on features</li>
+      <li>A basic <b>flowchart</b> of the program's control flow</li>
+      <li>Work division — who built what</li>
+      <li>Progress on each goal — met / partial / missed, with evidence</li>
+      <li>How it works — the design and main subroutines</li>
+      <li>How to build &amp; run — the single code file, assemble/run steps</li>
+      <li><b>Outputs for different scenarios tested</b> — a table: scenario / input → expected → actual → pass or fail</li>
+      <li>Screenshots of the program running</li>
+      <li>Challenges faced, what did not work, and lessons learned</li>
+    </ol>
+
+    <h3 class="ghh">The split — coding challenge &amp; viva</h3>
+    <ul class="ghsteps">
+      <li><b>When:</b> in class on <b>Tuesday / Wednesday after Thanksgiving (Dec 1–2)</b>.</li>
+      <li><b>Coding challenge:</b> each student makes a small <b>live change to their own code</b> — this is the individual "split" (20%).</li>
+      <li><b>Viva:</b> written-then-oral — you answer questions about your own code, then explain them. <b>Each group's viva is conducted based on those answers.</b></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ GITHUB HELP ============ -->
+<section class="page" data-page="github">
+  <div class="formcard">
+    <div class="formhead"><span class="tag">GitHub</span><h2>First Steps</h2><span class="sub">new to GitHub? start here</span></div>
+    <p style="margin:12px 0 0">Your project lives in <b>one shared repo</b>. There are <b>three ways</b> to do everything — pick whichever you like, and you can mix them:</p>
+    <ul class="ghsteps">
+      <li><b>Web interface</b> (github.com) — do it in your browser, nothing to install. Easiest to start.</li>
+      <li><b>GitHub Desktop</b> (app from desktop.github.com) — buttons on your computer; best for everyday work.</li>
+      <li><b>Command line</b> (git from git-scm.com) — type commands in a terminal; fastest once you know it.</li>
+    </ul>
+
+    <h3 class="ghh">1 · Create your first repository <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0">(one teammate does this)</span></h3>
+    <ul class="ghsteps">
+      <li><b>Web:</b> on github.com click <b>+ (top-right) → New repository</b>, give it a name, click <b>Create repository</b>. Then open <b>Settings → Collaborators</b> and add your two teammates.</li>
+      <li><b>Desktop:</b> <b>File → New repository</b>, set a name and a local folder, <b>Create repository</b>, then <b>Publish repository</b>.</li>
+      <li><b>Command line:</b> create the empty repo on github.com, copy its URL, then <code>git clone &lt;url&gt;</code> to get a folder on your computer.</li>
+    </ul>
+
+    <h3 class="ghh">2 · Add your files to the repo</h3>
+    <ul class="ghsteps">
+      <li><b>Web:</b> open the repo, click <b>Add file → Upload files</b>, drag your <code>.s</code> files in, then <b>Commit changes</b>.</li>
+      <li><b>Desktop:</b> copy your <code>.s</code> files into the repo folder on your computer — they appear in GitHub Desktop. Type a <b>Summary</b>, <b>Commit to main</b>, then <b>Push origin</b>.</li>
+      <li><b>Command line:</b> copy your files into the repo folder, then:
+        <pre class="cmdblock">git add -A                <span class="cmt"># stage the new files</span>
+git commit -m "add files" <span class="cmt"># save a snapshot</span>
+git push                  <span class="cmt"># upload to GitHub</span></pre>
+      </li>
+    </ul>
+
+    <h3 class="ghh">3 · Save &amp; share changes (do this often)</h3>
+    <ul class="ghsteps">
+      <li><b>Web:</b> open a file, click the <b>pencil</b> to edit, then <b>Commit changes</b>.</li>
+      <li><b>Desktop:</b> type a short <b>Summary</b>, <b>Commit to main</b>, then <b>Push origin</b>.</li>
+      <li><b>Command line:</b> <code>git add -A</code> → <code>git commit -m "message"</code> → <code>git push</code>.</li>
+    </ul>
+
+    <h3 class="ghh">4 · Get teammates' latest first</h3>
+    <ul class="ghsteps">
+      <li><b>Web:</b> the browser always shows the newest version.</li>
+      <li><b>Desktop:</b> click <b>Fetch origin</b>, then <b>Pull</b>.</li>
+      <li><b>Command line:</b> <code>git pull</code>.</li>
+    </ul>
+
+    <h3 class="ghh">Tips</h3>
+    <ul class="ghsteps">
+      <li><b>Commit small and often</b> with clear messages — your commit history is part of the grade.</li>
+      <li><b>Pull before you start, push when you finish</b> — it avoids most conflicts.</li>
+      <li><b>Merge conflict?</b> If two people changed the same lines, open the file, keep the correct lines, delete the <code>&lt;&lt;&lt;&lt; ==== &gt;&gt;&gt;&gt;</code> markers, then commit.</li>
+      <li>Put your weekly <b>PDF report</b> in a <code>reports/</code> folder in the repo, or submit it on Canvas.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="foot">CPE 2300 · RISC-V Term Project. Entries are stored in this browser only; print each week to a PDF to submit.</div>
+</div>
+
+<script>
+(function(){
+  var DATES = [
+    {id:"nov18", label:"Wed Nov 18"},
+    {id:"dec2",  label:"Wed Dec 2"},
+    {id:"dec4",  label:"Fri Dec 4"}
+  ];
+  var FINAL = "dec4";
+  var DEFAULTS = {
+    title: "Stack Smash → Defenses: Controlled RISC-V Memory-Safety Demo",
+    team: "TBD — Stack Smash Team",
+    "core__1": "Demonstrate, only in the RISC-V Playground, a controlled oversized input changing a saved return target so execution reaches the benign win() routine.",
+    "coredue__1": "Wed Nov 18",
+    "core__2": "Make the stack frame and control flow observable with the memory/register panels and a framebuffer status display.",
+    "coredue__2": "Wed Dec 2",
+    "core__3": "Implement bounds checking and a stack canary so the same oversized input is rejected or detected before win() can run.",
+    "coredue__3": "Wed Dec 2",
+    "addon__1": "Compare a write-XOR-execute (W^X) policy or documented emulator equivalent with the vulnerable design.",
+    "addondue__1": "Wed Dec 2",
+    "addon__2": "Add a fixed input-length test harness and visible pass/fail results for normal, boundary, and oversized inputs.",
+    "addondue__2": "Wed Dec 2",
+    "addon__3": "Polish the demo with a control-flow diagram, screenshots, and final test evidence.",
+    "addondue__3": "Fri Dec 4",
+    "goal__nov18__1": "Finalize the isolated-emulator scope, draw the stack-frame map, and define normal, boundary, and oversized test inputs.",
+    "goallink__nov18__1": "core__1",
+    "goal__nov18__2": "Create the pseudocode/C reference design, register/memory map, and a minimal framebuffer status view.",
+    "goallink__nov18__2": "core__2",
+    "goal__dec2__1": "Implement and verify the vulnerable demonstration, then capture memory/register evidence of the controlled return-address change.",
+    "goallink__dec2__1": "core__1",
+    "goal__dec2__2": "Implement and verify bounds checking plus a canary against the same fixed oversized input; prepare final demo evidence.",
+    "goallink__dec2__2": "core__3",
+    "wd_name_1": "TBD — Team member 1",
+    "wd_task_1": "Own the vulnerable and normal-call demonstration plus observability: stack-frame design, controlled input cases, framebuffer status display, and evidence capture. Assembly must be written by the student.",
+    "wd_name_2": "TBD — Team member 2",
+    "wd_task_2": "Own the defensive path and integration: bounds-check and canary design, test cases, test log, report, and final demo rehearsal. Assembly must be written by the student.",
+    skeleton: "main — initialize the demonstration and run selected fixed test cases\nrun_case — select a normal, boundary, or oversized input scenario\nvulnerable_demo — model the unchecked write within the isolated Playground lab\nsafe_demo — enforce the length bound before writes\ncheck_canary — verify the frame-integrity value before returning\nshow_status — display normal return, benign win(), or blocked/detected result\nwin — harmless success routine used only to prove redirected control flow",
+    diagram: "TBD — add a repository link to the stack/control-flow diagram",
+    repo: "TBD — add the shared GitHub repository URL",
+    "test__core__1__success": "In the isolated Playground only, a fixed oversized test case changes the intended saved return target and transfers execution to the benign win() routine; a short input returns normally.",
+    "test__core__1__owners": "TBD — Team member 1",
+    "test__core__1__method": "Run two fixed cases in the Playground; single-step the return and inspect the stack memory plus ra before and after the write.",
+    "test__core__1__steps": "Case A: run the normal short input. Case B: run the pre-defined oversized lab input. Pause before return and then step through return.",
+    "test__core__1__expected": "Case A returns to the intended caller. Case B reaches only the project's harmless win() routine; no external program or system is targeted.",
+    "test__core__1__evidence": "Screenshot/video of stack memory, register state, and win() status; commit link TBD.",
+    "test__core__2__success": "The demo visibly identifies the current case and outcome, while the memory/register panels make the buffer, saved state, and return behavior explainable.",
+    "test__core__2__owners": "TBD — Team member 1",
+    "test__core__2__method": "Run normal, vulnerable, and protected cases; verify the framebuffer status changes and compare memory/register views at the return point.",
+    "test__core__2__steps": "Select each fixed case, run it, and capture the status display plus the relevant stack-memory and ra observations.",
+    "test__core__2__expected": "The display reports Normal return, benign win(), or Blocked/Canary detected, matching the observed control flow.",
+    "test__core__2__evidence": "Three screenshots plus a labeled stack-frame/control-flow diagram.",
+    "test__core__3__success": "The same predefined oversized input that reaches win() in the vulnerable case is rejected by the bounds check or detected by the canary before return.",
+    "test__core__3__owners": "TBD — Team member 2",
+    "test__core__3__method": "Run identical normal, boundary, and oversized inputs against vulnerable and protected paths; record actual outcome for each.",
+    "test__core__3__steps": "For every input length, run vulnerable path then protected path; inspect the canary before return and confirm win() is not reached in the protected oversized case.",
+    "test__core__3__expected": "Normal and permitted boundary inputs return normally. Oversized input is blocked or detected; the protected path does not enter win().",
+    "test__core__3__evidence": "Pass/fail test table, canary observation, and screenshot of the blocked/detected status.",
+    "test__addon__1__success": "The report/demo accurately explains how W^X reduces writable-and-executable memory risk and states whether the Playground implements it directly or it is modeled.",
+    "test__addon__1__owners": "TBD — Team member 2",
+    "test__addon__1__method": "Document the emulator capability, run the available comparison, and verify the explanation against observed behavior.",
+    "test__addon__1__steps": "Determine whether memory permissions are supported. If yes, show allowed and disallowed operations. If no, label the comparison as a modeled policy.",
+    "test__addon__1__expected": "The demo makes no unsupported claim: it either demonstrates W^X directly or clearly presents the model and its limitation.",
+    "test__addon__1__evidence": "Capability note, screenshot, and report section reference.",
+    "test__addon__2__success": "A results display/table records normal, boundary, and oversized fixed inputs with expected and actual outcomes.",
+    "test__addon__2__owners": "TBD — Team member 2",
+    "test__addon__2__method": "Execute each fixed case and compare the logged result with the planned result.",
+    "test__addon__2__steps": "Run normal, boundary, one-over-boundary, and oversized cases for each relevant program path.",
+    "test__addon__2__expected": "Every case has an unambiguous pass/fail result and an observable state.",
+    "test__addon__2__evidence": "Final scenario/input/expected/actual/pass-fail table.",
+    "test__addon__3__success": "The final demo can be reproduced from the README and has clear evidence for each core objective.",
+    "test__addon__3__owners": "TBD — All members",
+    "test__addon__3__method": "A teammate follows the README and runs the selected cases without unstated steps.",
+    "test__addon__3__steps": "Start from the documented source, follow assemble/run instructions, execute the core cases, and compare captured evidence.",
+    "test__addon__3__expected": "The demo and report are complete, consistent, and ready for the viva.",
+    "test__addon__3__evidence": "README, report PDF, screenshots, and commit/repository link."
+  };
+  var store = {
+    get:function(k){ try{var v=localStorage.getItem('cpe2300.stacksmash.'+k); return v===null && Object.prototype.hasOwnProperty.call(DEFAULTS,k) ? DEFAULTS[k] : v;}catch(e){return Object.prototype.hasOwnProperty.call(DEFAULTS,k) ? DEFAULTS[k] : null;} },
+    set:function(k,v){ try{localStorage.setItem('cpe2300.stacksmash.'+k,v);}catch(e){} }
+  };
+  function esc(s){ return (s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+
+  function save(el){ store.set(el.dataset.k, el.type==='checkbox' ? (el.checked?'1':'0') : el.value); }
+  function bind(scope){
+    scope.querySelectorAll('[data-k]').forEach(function(el){
+      if(!el.dataset.bound){
+        el.dataset.bound='1';
+        el.addEventListener('input', function(){ save(el); flash(); });
+        el.addEventListener('change', function(){ save(el); flash(); });
+      }
+      var v = store.get(el.dataset.k);
+      if(v!=null){ if(el.type==='checkbox') el.checked = (v==='1'); else el.value = v; }
+    });
+  }
+  var flashT;
+  function flash(){ var n=document.getElementById('savedNote'); if(!n)return; n.textContent='Saved ✓'; clearTimeout(flashT); flashT=setTimeout(function(){n.textContent='Saved in this browser';},900); }
+
+  // ---- Plan: team member rows (each gets a weekly contribution space) ----
+  (function(){
+    var m = document.getElementById('memberlist');
+    var s = '';
+    for(var i=1;i<=2;i++){
+      s += '<div class="memrow"><input type="text" class="mn" data-k="mname__'+i+'" placeholder="Student '+i+' name"><input type="text" class="me" data-k="memail__'+i+'" placeholder="email (optional)"></div>';
+    }
+    m.innerHTML = s;
+  })();
+
+  // ---- Plan: overall objectives (core + add-on, each with a Wednesday deadline) ----
+  (function(){
+    var o = document.getElementById('objplan');
+    var opts = '<option value="">deadline —</option>' + DATES.map(function(d){ return '<option>'+d.label+'</option>'; }).join('');
+    function rowsFor(prefix,n,ph){
+      var s='';
+      for(var i=1;i<=n;i++){
+        s += '<div class="objrow"><input type="text" data-k="'+prefix+'__'+i+'" placeholder="'+ph+' '+i+'"><select data-k="'+prefix+'due__'+i+'">'+opts+'</select></div>';
+      }
+      return s;
+    }
+    o.innerHTML =
+      '<div class="objgrp"><div class="objhead">Core objectives — must-have · 80% of product grade</div>'+rowsFor('core',3,'Core objective')+'</div>'+
+      '<div class="objgrp" style="margin-top:12px"><div class="objhead addon">Add-on features — if time allows · 20%</div>'+rowsFor('addon',3,'Add-on feature')+'</div>';
+  })();
+
+  // ---- Plan: measurable demo/test criteria for every objective ----
+  function objectiveList(includeBlank){
+    var list=[];
+    document.querySelectorAll('[data-k^="core__"],[data-k^="addon__"]').forEach(function(el){
+      var key=el.dataset.k, text=(el.value||'').trim();
+      if(!text && !includeBlank) return;
+      list.push({key:key,text:text||'Enter objective above',isCore:key.indexOf('core__')===0,num:key.split('__')[1],blank:!text});
+    });
+    return list;
+  }
+  function objectiveName(o){ return (o.isCore?'Core objective ':'Add-on ')+o.num+': '+o.text; }
+  function renderChecklist(){
+    var c=document.getElementById('testchecklist'); if(!c) return;
+    var items=objectiveList(true), html='';
+    items.forEach(function(o){
+      var p='test__'+o.key+'__';
+      html += '<div class="checkcard '+(o.isCore?'':'addon')+'">'+
+        '<div class="checktitle">'+esc(objectiveName(o))+'</div>'+ 
+        '<p class="checkhint">Write the agreed test now. This is what you will demonstrate at the end.</p>'+
+        '<div class="checkgrid">'+
+          '<div><span class="sublabel">Success criterion</span><textarea rows="2" data-k="'+p+'success" placeholder="What must work?"></textarea></div>'+
+          '<div><span class="sublabel">Owner(s)</span><input type="text" data-k="'+p+'owners" placeholder="Name(s) responsible"></div>'+
+          '<div><span class="sublabel">How will it be tested?</span><textarea rows="2" data-k="'+p+'method" placeholder="e.g., run in MustyV; inspect framebuffer and stored value"></textarea></div>'+
+          '<div><span class="sublabel">Exact test inputs / actions</span><textarea rows="2" data-k="'+p+'steps" placeholder="Exact clicks, keys, values, or scenario — e.g., click x=20, 100, 180"></textarea></div>'+
+          '<div><span class="sublabel">Expected observable result</span><textarea rows="2" data-k="'+p+'expected" placeholder="What should appear, change, or be measured?"></textarea></div>'+
+          '<div class="full"><span class="sublabel">Evidence to bring to the final demo</span><input type="text" data-k="'+p+'evidence" placeholder="Commit hash/link, screenshot, video timestamp, or MustyV observation"></div>'+
+        '</div></div>';
+    });
+    c.innerHTML=html;
+    bind(c);
+  }
+
+  // ---- Plan: goal-plan grid (two goals per Wednesday, each linked to a main objective) ----
+  (function(){
+    var g = document.getElementById('goalplan');
+    g.innerHTML = DATES.filter(function(d){ return d.id!==FINAL; }).map(function(d){
+      return '<div class="gpgroup"><div class="gpdate">'+d.label+'</div>'+
+        [1,2].map(function(n){
+          return '<div class="gpgoal"><input type="text" data-k="goal__'+d.id+'__'+n+'" placeholder="Goal '+n+'">'+
+            '<select class="goallink" data-k="goallink__'+d.id+'__'+n+'"></select></div>';
+        }).join('')+
+      '</div>';
+    }).join('');
+  })();
+
+  // ---- Week pages ----
+  function weekPage(d){
+    return '<section class="page" data-page="'+d.id+'">'+
+      '<div class="formcard">'+
+        '<div class="formhead"><span class="tag">'+d.label+'</span><h2>Weekly Report</h2><span class="sub">due '+d.label+'</span></div>'+
+        '<div class="field"><label>This week\'s goals <span class="hint">— from your plan; mark how each went</span></label><div class="goalwrap" id="goals-'+d.id+'"></div></div>'+
+        '<div class="field"><label>How much of this week\'s goals were attained?</label><select data-k="attained__'+d.id+'"><option value="">—</option><option>All</option><option>Most</option><option>About half</option><option>A little</option><option>None</option></select></div>'+
+        '<div class="field"><label>Changes to the plan (if any)</label><textarea rows="3" data-k="changes__'+d.id+'" placeholder="What you had to add, drop, or re-scope this week, and why."></textarea></div>'+
+        '<div class="field"><label>Member contributions this week</label><div id="members-'+d.id+'"></div></div>'+
+        '<div class="field"><label>Core code developed this week <span class="hint">— summarize the progress first, then paste the key routine(s) and link the commit/file</span></label>'+
+          '<textarea rows="3" data-k="codesummary__'+d.id+'" placeholder="Summary of progress: what the code does, what changed this week, what works now."></textarea>'+
+          '<textarea rows="8" class="codearea" spellcheck="false" data-k="code__'+d.id+'" placeholder="# paste your core assembly here" style="margin-top:8px"></textarea>'+
+          '<input type="url" data-k="codelink__'+d.id+'" placeholder="https://github.com/.../commit/..." style="margin-top:8px"></div>'+
+        '<div class="field"><label>Challenges faced <span class="hint">— what was hard or did not work</span></label><textarea rows="4" data-k="challenges__'+d.id+'" placeholder="e.g. couldn\'t get the circle mask right; a jalr returned to the wrong place; team mix-up on who owned draw vs input; the build broke after adding the stack frame."></textarea></div>'+
+      '</div></section>';
+  }
+  function summaryPage(d){
+    return '<section class="page" data-page="'+d.id+'">'+
+      '<div class="formcard">'+
+        '<div class="formhead"><span class="tag">'+d.label+'</span><h2>Final Summary</h2><span class="sub">overall accomplishments — the basis for your project report</span></div>'+
+        '<div class="field"><label>Objectives achieved <span class="hint">— final status of each objective (tap one to jump to the Plan page)</span></label><div id="objstatus-'+d.id+'"></div></div>'+
+        '<div class="field"><label>Final demo evidence <span class="hint">— use the approved Plan checklist; record what happened when you ran each test.</span></label><div id="finalchecklist-'+d.id+'"></div></div>'+
+        '<div class="field"><label>Progress on each goal <span class="hint">— where each weekly goal ended up (tap one to jump to its page)</span></label><div id="goalprog-'+d.id+'"></div></div>'+
+        '<div class="field"><label>Self-assessed project score <span class="hint">— out of 100; core objectives count ~80%, add-ons ~20%</span></label><div class="selfgrade"><input type="text" data-k="final_score" placeholder="/ 100" style="flex:0 0 110px"><input type="text" data-k="final_score_why" placeholder="One line: how the objectives above justify this score"></div></div>'+
+        '<div class="field"><label>Each member — contribution, achievements &amp; challenges</label><div id="finalmembers-'+d.id+'"></div></div>'+
+        '<div class="field"><label>Team overall — achievements</label><textarea rows="4" data-k="final_team_ach"></textarea></div>'+
+        '<div class="field"><label>Team overall — challenges faced</label><textarea rows="4" data-k="final_team_chal"></textarea></div>'+
+        '<div class="field"><label>Lessons learned</label><textarea rows="3" data-k="final_lessons"></textarea></div>'+
+        '<div class="row"><div class="field"><label>Demo link</label><input type="url" data-k="final_demo" placeholder="https://..."></div><div class="field"><label>Final repo link</label><input type="url" data-k="final_repo" placeholder="https://github.com/..."></div></div>'+
+      '</div></section>';
+  }
+  document.getElementById('weeks').innerHTML = DATES.map(function(d){ return d.id===FINAL ? summaryPage(d) : weekPage(d); }).join('');
+
+  function renderGoals(id){
+    var c = document.getElementById('goals-'+id); if(!c) return;
+    c.innerHTML = [1,2].map(function(n){
+      var txt = store.get('goal__'+id+'__'+n);
+      var disp = (txt && txt.trim()) ? esc(txt) : '<span class="muted">(Goal '+n+' not set in the plan)</span>';
+      var lk = store.get('goallink__'+id+'__'+n), linkHtml = '';
+      if(lk){ var ot = store.get(lk), isCore = lk.indexOf('core__')===0, num = lk.split('__')[1];
+        linkHtml = '<div class="glink">↳ '+(isCore?'Core ':'Add-on ')+num+((ot&&ot.trim())?': '+esc(ot):'')+'</div>'; }
+      return '<div class="goalrow"><div class="gtext"><b>Goal '+n+':</b> '+disp+linkHtml+'</div>'+
+        '<select data-k="status__'+id+'__'+n+'"><option value="">status —</option><option>Done</option><option>Mostly done</option><option>Partial</option><option>Not done</option></select></div>';
+    }).join('');
+    bind(c);
+  }
+  function renderMembers(id){
+    var c = document.getElementById('members-'+id); if(!c) return;
+    var html = '';
+    for(var i=1;i<=2;i++){
+      var nm = (store.get('mname__'+i)||'').trim();
+      var header = nm ? esc(nm) : 'Member '+i;
+      html += '<div class="mcontrib"><label>'+header+'</label><textarea rows="2" data-k="contrib__'+id+'__'+i+'" placeholder="What '+header+' did this week."></textarea></div>';
+    }
+    c.innerHTML = html;
+    bind(c);
+  }
+
+  function renderSummary(id){
+    var os = document.getElementById('objstatus-'+id);
+    if(os){
+      var rows = '';
+      document.querySelectorAll('[data-k^="core__"],[data-k^="addon__"]').forEach(function(el){
+        var key = el.dataset.k, isCore = key.indexOf('core__')===0, num = key.split('__')[1], txt = (el.value||'').trim();
+        if(!txt) return;
+        var label = (isCore?'Core ':'Add-on ')+num+': '+txt;
+        rows += '<div class="goalrow"><div class="gtext jump" data-goto="plan" title="Go to the Plan page">'+esc(label)+'</div><select data-k="objstat__'+key+'"><option value="">status —</option><option>Done</option><option>Mostly done</option><option>Partial</option><option>Not done</option></select></div>';
+      });
+      os.innerHTML = rows || '<div class="hint">Set objectives on the Plan tab.</div>';
+      bind(os);
+    }
+    var fc=document.getElementById('finalchecklist-'+id);
+    if(fc){
+      var fhtml='', items=objectiveList();
+      items.forEach(function(o){
+        var p='test__'+o.key+'__', fp='finaltest__'+o.key+'__';
+        function saved(s){ return esc(store.get(p+s)||'— not provided —'); }
+        fhtml += '<div class="checkcard '+(o.isCore?'':'addon')+'">'+
+          '<div class="checktitle jump" data-goto="plan" title="Go to the Plan page">'+esc(objectiveName(o))+'</div>'+ 
+          '<div class="checkgrid">'+
+            '<div><span class="sublabel">Approved success criterion</span><div class="checkhint">'+saved('success')+'</div></div>'+
+            '<div><span class="sublabel">Approved test method</span><div class="checkhint">'+saved('method')+'</div></div>'+
+            '<div><span class="sublabel">Approved exact test inputs / actions</span><div class="checkhint">'+saved('steps')+'</div></div>'+
+            '<div><span class="sublabel">Expected result</span><div class="checkhint">'+saved('expected')+'</div></div>'+
+            '<div><span class="sublabel">Planned evidence</span><div class="checkhint">'+saved('evidence')+'</div></div>'+
+            '<div><span class="sublabel">Actual result at final demo</span><textarea rows="2" data-k="'+fp+'actual" placeholder="What actually happened when you ran the test?"></textarea></div>'+
+            '<div><span class="sublabel">Final evidence link / location</span><input type="text" data-k="'+fp+'evidence" placeholder="Commit, screenshot, video timestamp, or observation"></div>'+
+            '<div><span class="sublabel">Demo readiness</span><select data-k="'+fp+'ready"><option value="">—</option><option>Ready to demonstrate</option><option>Works partly</option><option>Not ready</option></select></div>'+
+            '<div><span class="sublabel">Change needed from approved plan?</span><textarea rows="2" data-k="'+fp+'change" placeholder="State what changed and why; leave blank if unchanged."></textarea></div>'+
+          '</div></div>';
+      });
+      fc.innerHTML=fhtml || '<div class="hint">Set objectives and their test checklist on the Plan tab.</div>';
+      bind(fc);
+    }
+    var gp = document.getElementById('goalprog-'+id);
+    if(gp){
+      var grows = '';
+      DATES.filter(function(d){ return d.id!==FINAL; }).forEach(function(d){
+        [1,2].forEach(function(n){
+          var txt = (store.get('goal__'+d.id+'__'+n)||'').trim();
+          if(!txt) return;
+          var lk = store.get('goallink__'+d.id+'__'+n), linkTxt='';
+          if(lk){ var isC=lk.indexOf('core__')===0, num2=lk.split('__')[1]; linkTxt=' <span class="glink" style="display:inline;margin-left:6px">↳ '+(isC?'Core ':'Add-on ')+num2+'</span>'; }
+          grows += '<div class="goalrow"><div class="gtext jump" data-goto="'+d.id+'" title="Go to the '+d.label+' page"><b>'+d.label+'</b> — '+esc(txt)+linkTxt+'</div><select data-k="status__'+d.id+'__'+n+'"><option value="">status —</option><option>Done</option><option>Mostly done</option><option>Partial</option><option>Not done</option></select></div>';
+        });
+      });
+      gp.innerHTML = grows || '<div class="hint">Set weekly goals on the Plan tab.</div>';
+      bind(gp);
+    }
+    var fm = document.getElementById('finalmembers-'+id);
+    if(fm){
+      var mhtml = '';
+      for(var mi=1;mi<=2;mi++){
+        var nm = (store.get('mname__'+mi)||'').trim();
+        var header = nm ? esc(nm) : 'Member '+mi;
+        mhtml += '<div class="memblock">'+
+          '<div class="memname">'+header+'</div>'+
+          '<div class="subfield"><span class="sublabel">Overall contribution</span><textarea rows="2" data-k="fcontrib__'+mi+'"></textarea></div>'+
+          '<div class="subfield"><span class="sublabel">Achievements</span><textarea rows="2" data-k="fach__'+mi+'"></textarea></div>'+
+          '<div class="subfield"><span class="sublabel">Challenges faced</span><textarea rows="2" data-k="fchal__'+mi+'"></textarea></div>'+
+          '<div class="selfgrade"><span class="sglabel">Self-grade (%):</span><input type="text" inputmode="numeric" data-k="fgrade__'+mi+'" placeholder="%" style="flex:0 0 90px"><input type="text" data-k="fgrade_why__'+mi+'" placeholder="why (optional)"></div>'+
+        '</div>';
+      }
+      fm.innerHTML = mhtml;
+      bind(fm);
+    }
+  }
+
+  // ---- Tabs ----
+  var tabs = document.getElementById('tabs');
+  tabs.innerHTML = '<button data-go="plan" class="active">Plan</button>' +
+    DATES.map(function(d){ return '<button data-go="'+d.id+'">'+d.label+(d.id===FINAL?' · Summary':'')+'</button>'; }).join('') +
+    '<button data-go="grading">Grading</button>' +
+    '<button data-go="github">GitHub</button>';
+  function show(id){
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.toggle('active', p.dataset.page===id); });
+    tabs.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b.dataset.go===id); });
+    if(id===FINAL){ renderSummary(id); }
+    else if(id!=='plan' && id!=='github' && id!=='grading'){ renderGoals(id); renderMembers(id); }
+    window.scrollTo(0,0);
+  }
+  tabs.addEventListener('click', function(e){ var b=e.target.closest('button'); if(b) show(b.dataset.go); });
+  document.addEventListener('click', function(e){ var j=e.target.closest('.jump'); if(j && j.dataset.goto){ show(j.dataset.goto); } });
+
+  // ---- link weekly goals to main objectives ----
+  function objOptions(selected){
+    var opts = '<option value="">— link to a main objective —</option>';
+    document.querySelectorAll('[data-k^="core__"],[data-k^="addon__"]').forEach(function(el){
+      var key = el.dataset.k, isCore = key.indexOf('core__')===0, num = key.split('__')[1];
+      var txt = (el.value||'').trim();
+      var label = (isCore?'Core ':'Add-on ')+num+(txt?': '+txt:' (not set)');
+      opts += '<option value="'+key+'"'+(key===selected?' selected':'')+'>'+esc(label)+'</option>';
+    });
+    return opts;
+  }
+  function refreshLinks(){
+    document.querySelectorAll('select.goallink').forEach(function(sel){
+      var cur = store.get(sel.dataset.k) || sel.value || '';
+      sel.innerHTML = objOptions(cur);
+      sel.value = cur;
+    });
+  }
+
+  bind(document);
+  refreshLinks();
+  renderChecklist();
+  document.querySelectorAll('[data-k^="core__"],[data-k^="addon__"]').forEach(function(el){ el.addEventListener('input', function(){ refreshLinks(); renderChecklist(); }); });
+
+  var t=document.getElementById('themeT');
+  if(t) t.addEventListener('change', function(){ if(t.checked) document.documentElement.setAttribute('data-theme','light'); else document.documentElement.removeAttribute('data-theme'); });
+})();
+</script>
+</body></html>
+
+</body></html>

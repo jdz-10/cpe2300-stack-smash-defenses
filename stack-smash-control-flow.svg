@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Stack Smash to Defenses: controlled RISC-V emulator demonstration</title>
+  <desc id="desc">A flow diagram comparing a normal input, an oversized input through a vulnerable routine that reaches a harmless win function, and an oversized input stopped by a bounds check or stack canary.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12z" fill="#1d4d2f"/></marker>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#18221b}.title{font-size:31px;font-weight:700}.sub{font-size:17px;fill:#536157}.box{fill:#fffdf7;stroke:#1d4d2f;stroke-width:3}.vuln{fill:#f9e2df;stroke:#9d2d23;stroke-width:3}.safe{fill:#e2f0e5;stroke:#1d4d2f;stroke-width:3}.callout{font-size:20px;font-weight:700}.body{font-size:16px}.line{fill:none;stroke:#1d4d2f;stroke-width:3;marker-end:url(#arrow)}.badline{fill:none;stroke:#9d2d23;stroke-width:3;marker-end:url(#arrow)}.label{font-size:15px;font-weight:700}.tiny{font-size:13px;fill:#536157}
+    </style>
+  </defs>
+  <rect width="1200" height="760" fill="#f7f5ed"/>
+  <text class="title" x="600" y="52" text-anchor="middle">Stack Smash → Defenses</text>
+  <text class="sub" x="600" y="80" text-anchor="middle">Controlled demonstration in the RISC-V Playground only</text>
+
+  <rect class="box" x="450" y="115" width="300" height="78" rx="14"/>
+  <text class="callout" x="600" y="148" text-anchor="middle">Fixed test input</text>
+  <text class="body" x="600" y="174" text-anchor="middle">normal, boundary, or oversized</text>
+
+  <path class="line" d="M600 193 V242 H255 V280"/>
+  <path class="badline" d="M600 193 V242 H600 V280"/>
+  <path class="line" d="M600 193 V242 H945 V280"/>
+
+  <rect class="box" x="85" y="280" width="340" height="112" rx="14"/>
+  <text class="callout" x="255" y="314" text-anchor="middle">Normal path</text>
+  <text class="body" x="255" y="342" text-anchor="middle">input fits local buffer</text>
+  <text class="body" x="255" y="366" text-anchor="middle">saved return address remains intact</text>
+
+  <rect class="vuln" x="430" y="280" width="340" height="112" rx="14"/>
+  <text class="callout" x="600" y="314" text-anchor="middle">Vulnerable path</text>
+  <text class="body" x="600" y="342" text-anchor="middle">unchecked oversized lab input</text>
+  <text class="body" x="600" y="366" text-anchor="middle">corrupts saved return state</text>
+
+  <rect class="safe" x="775" y="280" width="340" height="112" rx="14"/>
+  <text class="callout" x="945" y="314" text-anchor="middle">Protected path</text>
+  <text class="body" x="945" y="342" text-anchor="middle">bounds check and stack canary</text>
+  <text class="body" x="945" y="366" text-anchor="middle">validate before return</text>
+
+  <path class="line" d="M255 392 V478"/>
+  <path class="badline" d="M600 392 V478"/>
+  <path class="line" d="M945 392 V478"/>
+  <text class="label" x="625" y="437" fill="#9d2d23">return uses altered target</text>
+
+  <rect class="safe" x="105" y="478" width="300" height="104" rx="14"/>
+  <text class="callout" x="255" y="514" text-anchor="middle">Normal return</text>
+  <text class="body" x="255" y="543" text-anchor="middle">returns to intended caller</text>
+  <text class="tiny" x="255" y="566" text-anchor="middle">record: pass</text>
+
+  <rect class="vuln" x="450" y="478" width="300" height="104" rx="14"/>
+  <text class="callout" x="600" y="514" text-anchor="middle">Benign win() routine</text>
+  <text class="body" x="600" y="543" text-anchor="middle">harmless proof of redirected flow</text>
+  <text class="tiny" x="600" y="566" text-anchor="middle">emulator lab only; no real target</text>
+
+  <rect class="safe" x="795" y="478" width="300" height="104" rx="14"/>
+  <text class="callout" x="945" y="514" text-anchor="middle">Blocked / detected</text>
+  <text class="body" x="945" y="543" text-anchor="middle">reject input or halt on canary mismatch</text>
+  <text class="tiny" x="945" y="566" text-anchor="middle">win() is not reached</text>
+
+  <rect class="box" x="160" y="640" width="880" height="65" rx="12"/>
+  <text class="body" x="600" y="670" text-anchor="middle">Evidence for the demo: framebuffer status + register/memory view + scenario table</text>
+  <text class="tiny" x="600" y="693" text-anchor="middle">Core concepts: stack frames · functions/calling convention · MMIO/framebuffer · bounds checks · canaries</text>
+</svg>
